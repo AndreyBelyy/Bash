@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Declare an array 'p' with the names of months
+p=("January" "February" "March" "April" "May" "June" "July" "August" "September" "October" "November" "December")
+
+# Check if there is an argument provided
+if [ -z "$1" ]; then
+    echo "No number of month given"
+    exit 1
+fi
+
+# Use the value of $1 as the index (subtract 1 to make it zero-based)
+a=$1
+
+# Check if the index is within the valid range
+if [ "$a" -ge 1 ] && [ "$a" -le ${#p[@]} ]; then
+    # Extract the month at the specified index
+    extracted_month="${p[a - 1]}"
+    echo "Month at index $1 is: $extracted_month"
+else
+    echo "Invalid number of month"
+fi
