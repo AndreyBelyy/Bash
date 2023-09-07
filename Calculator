@@ -1,0 +1,32 @@
+while true
+do
+        echo "Choose the action:"
+        echo "1. Add"
+        echo "2. Subtract"
+        echo "3. Multiply"
+        echo "4. Divide"
+        echo "5. Quit"
+        read choice
+
+        if [ $choice = 1 ]; then
+                echo "Number1, please: "
+                read num1
+                echo "Number2, please: "
+                read num2
+                echo "Result is: $(( num1 + num2 ))"
+        elif [ $choice = 2 ]; then
+                echo "Number1, please: "
+                read num1
+                echo "Number2, please: "
+                read num2
+                echo "Result is: $(( num1 - num2 ))"
+        elif [ $choice = 3 ]; then
+                echo "Number1, please: "
+                read num1
+                echo "Number2, please: "
+                read num2
+                echo "Result is: $(( num1 / num2 ))"
+        else
+                break
+        fi
+done
