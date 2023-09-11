@@ -20,7 +20,7 @@ function print_color(){
 #   Service name
 #######################################
 function check_service_status() {
-    is_service_active=$(sytemctl is-active $1)
+    is_service_active=$(systemctl is-active $1)
 
     if [ $is_service_active = "active" ]
     then
@@ -93,10 +93,10 @@ is_firewalld_rule_configured 3306
 # Configure Database
 
 print_color "green" "Configuring DB..."
-mysql -e "CREATE DATABASE ecomdb;"
-mysql -e "CREATE USER 'ecomuser'@'localhost' IDENTIFIED BY 'ecompassword';"
-mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'ecomuser'@'localhost';"
-mysql -e "FLUSH PRIVILEGES;"
+sudo mysql -e "CREATE DATABASE ecomdb;"
+sudo mysql -e "CREATE USER 'ecomuser'@'localhost' IDENTIFIED BY 'ecompassword';"
+sudo mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'ecomuser'@'localhost';"
+sudo mysql -e "FLUSH PRIVILEGES;"
 
 # Load inventory
 
@@ -106,11 +106,11 @@ USE ecomdb;
 CREATE TABLE products (id mediumint(8) unsigned NOT NULL auto_increment,Name varchar(255) default NULL,Price varchar(255) default NULL, ImageUrl varchar(255) default NULL,PRIMARY KEY (id)) AUTO_INCREMENT=1;
 INSERT INTO products (Name,Price,ImageUrl) VALUES ("Laptop","100","c-1.png"),("Drone","200","c-2.png"),("VR","300","c-3.png"),("Tablet","50","c-5.png"),("Watch","90","c-6.png"),("Phone Covers","20","c-7.png"),("Phone","80","c-8.png"),("Laptop","150","c-4.png");
 EOF
-mysql < db-load-script.sql
+sudo mysql < db-load-script.sql
 
 mysql_db_results=$(sudo mysql -e "use ecomdb; select * from products;")
 
-if [[ $ mysql_db_results = *Laptop* ]]
+if [[ $mysql_db_results = *Laptop* ]]
 then
     print_color "green" "Inventory data loaded"
 else
@@ -140,7 +140,7 @@ check_service_status httpd
 # Download code
 print_color "green" "Cloning GIT Repo"
 sudo yum install -y git
-git clone https://github.com/kodekloudhub/learning-app-ecommerce.git /var/www/html/
+sudo git clone https://github.com/kodekloudhub/learning-app-ecommerce.git /var/www/html/
 
 # Update index
 sudo sed -i 's/172.20.1.101/localhost/g' /var/www/html/index.php
@@ -148,10 +148,6 @@ sudo sed -i 's/172.20.1.101/localhost/g' /var/www/html/index.php
 print_color "green" "All set."
 
 web_page=$(curl http://localhost)
-
-check_item "$web_page" Laptop
-check_item "$web_page" Drone
-check_item "$web_page" VR
 
 for item in Laptop Dronve VR Watch
 do
