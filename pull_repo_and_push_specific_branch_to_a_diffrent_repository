@@ -1,0 +1,11 @@
+#!/bin/sh
+ 
+git clone git@github.com:MacropayTD/test_pull.git
+cd test_pull
+git remote add test-push git@github.com:MacropayTD/test_push.git
+ 
+git checkout -b PreProd
+ 
+git filter-branch -- PreProd
+ 
+git push -u test-push PreProd
